@@ -1,0 +1,37 @@
+<script src="/js/vue.min.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<div id="list">
+    <table>
+        </thead>
+        <tr>
+            <td>id</td>
+            <td>url</td>
+        </tr>
+        <tr v-for="d in dlist">
+            <td>{{d.id}}</td>
+            <td>{{d.url}}</td>
+        </tr>
+    </table>
+
+</div>
+
+<script>
+    new Vue({
+        el: "#list",
+        data:{
+            dlist:[]
+        },
+        created(){
+            this.getDList()
+        },
+        methods:{
+            getDList(){
+                var url = "/db-list/list"
+                axios.get(url).then(response=>{
+                    this.dlist=response.data.list
+                })
+            }
+        }
+    })
+</script>

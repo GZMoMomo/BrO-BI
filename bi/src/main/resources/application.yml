@@ -1,0 +1,23 @@
+
+spring:
+  #mysql配置文件
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/bisystem
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #热部署开关，true开启，false关闭
+  devtools:
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false # 开发时关闭缓存,不然没法看到实时页面
+    mode: LEGACYHTML5 # 用非严格的 HTML
+    encoding: UTF-8
+    servlet:
+      #浏览器以html文本对响应体处理
+      content-type: text/html
+
+server:
+  #端口号
+  port: 8081
