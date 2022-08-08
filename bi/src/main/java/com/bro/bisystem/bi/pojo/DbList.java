@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -13,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BrO
- * @since 2022-07-29
+ * @since 2022-08-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,41 +32,9 @@ public class DbList implements Serializable {
 
     private String url;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    private String username;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
-    }
-
-    public String getDbType() {
-        return dbType;
-    }
-
-    public void setDbType(String dbType) {
-        this.dbType = dbType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    private String password;
 
     @Override
     public String toString() {
@@ -74,6 +43,8 @@ public class DbList implements Serializable {
                 ", dbName='" + dbName + '\'' +
                 ", dbType='" + dbType + '\'' +
                 ", url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

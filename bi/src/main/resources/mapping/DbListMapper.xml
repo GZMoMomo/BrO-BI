@@ -8,11 +8,13 @@
         <result column="db_name" property="dbName" />
         <result column="db_type" property="dbType" />
         <result column="url" property="url" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, db_name, db_type, url
+        id, db_name, db_type, url, username, password
     </sql>
 
 </mapper>

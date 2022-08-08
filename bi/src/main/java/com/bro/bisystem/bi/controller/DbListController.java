@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/db-list")
 public class DbListController {
-    @Autowired
+   @Autowired
     IDbListService iDbListService;
 
     @RequestMapping("/list")
@@ -32,5 +32,24 @@ public class DbListController {
         List<DbList> list = iDbListService.list(null);
         return Dict.create().set("code",200).set("message","查询成功").set("list",list);
     }
+
+    @RequestMapping("/add")
+    public Dict add(DbList dbList){
+        iDbListService.save(dbList);
+        return Dict.create().set("code",200).set("message","添加成功");
+    }
+
+    @RequestMapping("/update")
+    public Dict update(DbList dbList){
+        iDbListService.updateById(dbList);
+        return Dict.create().set("code",200).set("message","更改成功");
+    }
+
+    @RequestMapping("/delete")
+    public Dict delete(DbList dbList){
+        iDbListService.removeById(dbList);
+        return Dict.create().set("code",200).set("message","删除成功");
+    }
+
 
 }

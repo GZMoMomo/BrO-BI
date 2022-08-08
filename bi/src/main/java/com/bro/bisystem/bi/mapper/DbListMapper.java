@@ -2,9 +2,6 @@ package com.bro.bisystem.bi.mapper;
 
 import com.bro.bisystem.bi.pojo.DbList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * <p>
@@ -12,8 +9,8 @@ import java.util.List;
  * </p>
  *
  * @author BrO
- * @since 2022-07-29
+ * @since 2022-08-03
  */
-@Component(value = "DbListMapper")
 public interface DbListMapper extends BaseMapper<DbList> {
+
 }

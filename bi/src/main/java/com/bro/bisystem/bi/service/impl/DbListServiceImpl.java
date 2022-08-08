@@ -4,10 +4,7 @@ import com.bro.bisystem.bi.pojo.DbList;
 import com.bro.bisystem.bi.mapper.DbListMapper;
 import com.bro.bisystem.bi.service.IDbListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * <p>
@@ -15,7 +12,7 @@ import java.util.List;
  * </p>
  *
  * @author BrO
- * @since 2022-07-29
+ * @since 2022-08-03
  */
 @Service
 public class DbListServiceImpl extends ServiceImpl<DbListMapper, DbList> implements IDbListService {
