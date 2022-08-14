@@ -1,7 +1,7 @@
 # BrO-BI
 BI系统
 
-##  基础配置类(mybatis-plus已经集成了)
+##  基础配置类
 #### DatasourceConfiguration.java
 - 这个类主要是通过 DataSourceBuilder 读取application.yml文件的数据库信息去构建一个我们自定义的数据源，将其放入 Spring 容器里
 #### MybatisConfiguration.java
