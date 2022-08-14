@@ -38,3 +38,6 @@ ThreadLocal.withInitial(() -> DatasourceHolder.DEFAULT_ID);
 11. AtomicInteger & getAndIncrement()
 12. ScheduledExecutorService & scheduleAtFixedRate()
 13. ScheduledThreadPoolExecutor
+14. RequiredArgsConstructor
+15. CommandLineRunner
+16. @GeneratedValue
