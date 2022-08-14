@@ -15,9 +15,9 @@ BI系统
 #### DatasourceScheduler.java
 - 该类主要用于调度任务（调度器）
 #### DatasourceManager.java
-- 该类主要用于管理数据源，记录数据源最后使用时间，同时判断是否长时间未使用，超过一定时间未使用，会被释放连接
+- 该类主要用于管理数据源，记录数据源最后使用时间，同时判断是否长时间未使用，超过一定时间未使用，会被释放连接（内含HikariDataSource实际存放数据源）
 #### DatasourceHolder.java
-- 该类主要用于管理数据源，同时通过 DatasourceScheduler 定时检查数据源是否长时间未使用，超时则释放连接（根据id存放/获取实际数据源、使用调度器调度清理任务）
+- 该类主要用于管理数据源，同时通过 DatasourceScheduler 定时检查数据源是否长时间未使用，超时则释放连接（根据id管理DatasourceManager中的数据源、使用调度器调度清理任务）
 #### DatasourceConfigCache.java
 - 该类主要用于缓存数据源的配置，用户生成数据源时，获取数据源连接参数（存放着数据源配置信息）
 
