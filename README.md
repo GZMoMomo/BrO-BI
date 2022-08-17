@@ -2,6 +2,8 @@
 BI系统
 
 ##  基础配置类
+![5XmXbM1Mcw](https://user-images.githubusercontent.com/91240419/185086087-f842d987-084a-4af4-ad3b-944eac09181a.jpg)
+
 #### DatasourceConfiguration.java
 - 这个类主要是通过 DataSourceBuilder 读取application.yml文件的数据库信息去构建一个我们自定义的数据源，将其放入 Spring 容器里
 #### MybatisConfiguration.java
