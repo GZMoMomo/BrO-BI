@@ -33,4 +33,23 @@ public enum DatasourceConfigCache {
         }
         return null;
     }
+
+    /**
+     * 清除数据源配置
+     * @param id
+     */
+    public synchronized void removeConfig(Long id){
+        CONFIG_CACHE.remove(id);
+        //同步清楚DatasourceHolder对应的数据源
+        DatasourceHolder.INSTANCE.removeDatasource(id);
+    }
+
+    /**
+     * 添加数据源配置
+     * @param id
+     * @param config
+     */
+    public synchronized  void addConfig(Long id, DbList config) {
+        CONFIG_CACHE.put(id,config);
+    }
 }

@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 public class DatasourceManager {
 
     /**
+     * 默认释放时间
+     */
+    private static final long DEFAULT_RELEASE = 10L;
+
+    /**
      * 数据源
      */
     @Getter
@@ -33,5 +38,17 @@ public class DatasourceManager {
      */
     public void refreshTime() {
         this.lastUseTime = LocalDateTime.now();
+    }
+
+    /**
+     * 是否已过期，如果过期则关闭数据源
+     * @return 是否过期，{@code true} 过期，{@code false} 未过期
+     */
+    public boolean isExpired() {
+        if(LocalDateTime.now().isBefore(this.lastUseTime.plusMinutes(DEFAULT_RELEASE))){
+            return false;
+        }
+        this.dataSource.close();
+        return true;
     }
 }

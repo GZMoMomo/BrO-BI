@@ -31,7 +31,7 @@ public class DatasourceConfigContextHolder {
      *
      * @param id
      */
-    private static void setCurrentDatasourceConfig(Long id) {
+    public static void setCurrentDatasourceConfig(Long id) {
         DATASOURCE_HOLDER.set(id);
     }
 }

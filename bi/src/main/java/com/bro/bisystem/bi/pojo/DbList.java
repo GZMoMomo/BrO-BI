@@ -1,11 +1,11 @@
 package com.bro.bisystem.bi.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BrO
- * @since 2022-08-03
+ * @since 2022-08-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -24,27 +24,43 @@ public class DbList implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
-    private String dbName;
+    /**
+     * 数据库地址
+     */
+    @TableField(value = "`host`")
+    private String host;
 
-    private String dbType;
+    /**
+     * 数据库端口
+     */
+    @TableField(value = "`port`")
+    private String port;
 
-    private String url;
-
+    /**
+     * 数据库用户名
+     */
     private String username;
 
+    /**
+     * 数据库密码
+     */
+    @TableField(value = "`password`")
     private String password;
 
-    @Override
-    public String toString() {
-        return "DbList{" +
-                "id=" + id +
-                ", dbName='" + dbName + '\'' +
-                ", dbType='" + dbType + '\'' +
-                ", url='" + url + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    /**
+     * 数据库名称
+     */
+    @TableField(value = "`database`")
+    private String database;
+
+    /**
+     * 构造JDBC URL
+     *
+     * @return JDBC URL
+     */
+    public String buildJdbcUrl() {
+        return String.format("jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false", this.host, this.port, this.database);
     }
 }

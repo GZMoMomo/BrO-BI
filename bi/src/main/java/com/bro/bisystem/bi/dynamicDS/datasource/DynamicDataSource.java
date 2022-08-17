@@ -50,7 +50,7 @@ public class DynamicDataSource extends HikariDataSource {
             if (dbList == null) {
                 throw new RuntimeException("无此数据源");
             }
-            dataSource.setJdbcUrl(dbList.getUrl());
+            dataSource.setJdbcUrl(dbList.buildJdbcUrl());
             dataSource.setUsername(dbList.getUsername());
             dataSource.setPassword(dbList.getPassword());
             dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

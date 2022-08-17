@@ -26,6 +26,7 @@ public enum DatasourceHolder {
      * 启动执行，定时5分钟清理一次
      */
     DatasourceHolder() {
+        DatasourceScheduler.INSTANCE.schedule(this::clearExpireDatasource,5*60*1000);
     }
 
     /**
@@ -57,5 +58,30 @@ public enum DatasourceHolder {
     public synchronized void addDatasource(Long id, HikariDataSource dataSource) {
         DatasourceManager datasourceManager = new DatasourceManager(dataSource);
         DATASOURCE_CACHE.put(id, datasourceManager);
+    }
+
+    /**
+     * 清除超时的数据源
+     */
+    public synchronized void clearExpireDatasource(){
+        DATASOURCE_CACHE.forEach((k,v)->{
+            //排除默认数据源
+            if(!DEFAULT_ID.equals(k)){
+                if(v.isExpired()){
+                    DATASOURCE_CACHE.remove(k);
+                }
+            }
+        });
+    }
+
+    /**
+     * 清除动态数据源
+     * @param id 数据源id
+     */
+    public void removeDatasource(Long id) {
+        if(DATASOURCE_CACHE.containsKey(id)){
+            DATASOURCE_CACHE.get(id).getDataSource().close();
+            DATASOURCE_CACHE.remove(id);
+        }
     }
 }

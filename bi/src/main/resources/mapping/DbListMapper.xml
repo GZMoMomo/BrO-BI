@@ -5,16 +5,16 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.bro.bisystem.bi.pojo.DbList">
         <id column="id" property="id" />
-        <result column="db_name" property="dbName" />
-        <result column="db_type" property="dbType" />
-        <result column="url" property="url" />
+        <result column="`host`" property="host" />
+        <result column="`port`" property="port" />
         <result column="username" property="username" />
-        <result column="password" property="password" />
+        <result column="`password`" property="password" />
+        <result column="`database`" property="database" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, db_name, db_type, url, username, password
+        id, host, port, username, password, database
     </sql>
 
 </mapper>

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author BrO
- * @since 2022-08-03
+ * @since 2022-08-17
  */
 public interface DbListMapper extends BaseMapper<DbList> {
 

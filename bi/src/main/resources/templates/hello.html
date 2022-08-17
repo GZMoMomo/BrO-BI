@@ -1,31 +1,77 @@
 <script src="/js/vue.min.js"></script>
 <script src="/js/axios.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 
-<div id="list">
-    <table>
-        </thead>
-        <tr>
-            <td>id</td>
-            <td>url</td>
-        </tr>
-        <tr v-for="d in dlist">
-            <td>{{d.id}}</td>
-            <td>{{d.url}}</td>
-        </tr>
-    </table>
 
-</div>
+    <div id="list">
+        <table>
+            <tr>
+                <td>id</td>
+                <td>数据库</td>
+            </tr>
+            <tr v-for="d in dlist">
+                <td>{{d.id}}</td>
+                <td>{{d.database}}</td>
+                <td><button type="button" @click="getTables(d.id,d.database)">查询</button></td>
+            </tr>
+        </table>
+        <table>
+            <p>表名</p>
+            <tr v-for="table in tables">
+                <td>{{table}}</td>
+                <td><button type="button" @click="getColumns(id,catalog,table)">查询</button></td>
+            </tr>
+        </table>
+
+        <table>
+            <p>列名</p>
+            <tr>
+                <td>列名</td>
+                <td>类型</td>
+            </tr>
+            <tr v-for="(value,key) in columns">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+
 
 <script>
     new Vue({
         el: "#list",
         data:{
+            id:null,
+            catalog:null,
+            table:null,
+            catalogs:[],
+            tables:[],
+            columns:[],
             dlist:[]
         },
         created(){
             this.getDList()
         },
         methods:{
+            getTables:function(id,catalog){
+                var url="/db-detail/listTables"
+                axios.get(url,{params:{id:id,catalog:catalog}}).then(response=>{
+                    this.tables=response.data.tables
+                    this.id=id
+                    this.catalog=catalog
+                })
+            },
+
+            getColumns:function (id,catalog,table) {
+                var url="/db-detail/listColumns"
+                axios.get(url,{params:{id:id,catalog:catalog,table:table}}).then(response=>{
+                    this.columns=response.data.columns
+                    this.table=table
+                })
+            },
+
             getDList(){
                 var url = "/db-list/list"
                 axios.get(url).then(response=>{
@@ -34,4 +80,5 @@
             }
         }
     })
+
 </script>
