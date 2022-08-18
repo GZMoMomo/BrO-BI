@@ -44,3 +44,8 @@ ThreadLocal.withInitial(() -> DatasourceHolder.DEFAULT_ID);
 15. CommandLineRunner
 16. @GeneratedValue
 17. mapper.xml
+18. @Aspect   @Pointcut  JoinPoint   Signature
+19. @Component
+20. @RequiredArgsConstructor(onConstructor_ = @Autowired)
+21. header请求头信息
+22. @interface
