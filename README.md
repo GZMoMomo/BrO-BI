@@ -49,3 +49,6 @@ ThreadLocal.withInitial(() -> DatasourceHolder.DEFAULT_ID);
 20. @RequiredArgsConstructor(onConstructor_ = @Autowired)
 21. header请求头信息
 22. @interface   @Target({ElementType.METHOD})  @Retention(RetentionPolicy.RUNTIME)    @Documented
+23. RequestAttributes
+24. ServletRequestAttributes
+25. HttpServletRequest
