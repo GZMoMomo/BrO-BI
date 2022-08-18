@@ -48,4 +48,4 @@ ThreadLocal.withInitial(() -> DatasourceHolder.DEFAULT_ID);
 19. @Component
 20. @RequiredArgsConstructor(onConstructor_ = @Autowired)
 21. header请求头信息
-22. @interface
+22. @interface   @Target({ElementType.METHOD})  @Retention(RetentionPolicy.RUNTIME)    @Documented
