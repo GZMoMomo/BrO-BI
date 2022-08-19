@@ -2,7 +2,7 @@
 BI系统
 
 ##### 难点：
-- 问题：数据源切换成功后，使用mybatis查询其他数据源数据时依旧停留在默认数据源，使用JDBC可以查询成功，猜想mybatis解析的时候没有解析到新的数据源。
+- 问题：数据源切换成功后，使用mybatis查询其他数据源数据时依旧停留在默认数据源，使用JDBC可以查询成功，猜想mybatis解析的时候没有解析到新的数据源配置。
 ##### 复习一下流程：
 ![image](https://user-images.githubusercontent.com/91240419/185528084-73e6d0e6-36e4-436d-823c-2af1b0579efd.png)
 1. mybatis是什么时候获取到数据源的呢？要从测试方法生成SqlSessionFactory说起。通过断点进入到SqlSessionFactoryBuilder的build方法中，方法体就两行关键代码，首先new了一个XML 配置生成器，接着调用了其parse()生成一个Configuration对象。
