@@ -1,6 +1,18 @@
 # BrO-BI
 BI系统
 
+##### 难点：
+- 问题：数据源切换成功后，使用mybatis查询其他数据源数据时依旧停留在默认数据源，使用JDBC可以查询成功，猜想mybatis解析的时候没有解析到新的数据源。
+##### 复习一下流程：
+![image](https://user-images.githubusercontent.com/91240419/185528084-73e6d0e6-36e4-436d-823c-2af1b0579efd.png)
+1. mybatis是什么时候获取到数据源的呢？要从测试方法生成SqlSessionFactory说起。通过断点进入到SqlSessionFactoryBuilder的build方法中，方法体就两行关键代码，首先new了一个XML 配置生成器，接着调用了其parse()生成一个Configuration对象。
+2. parser.evalNode会生成一个mybatis封装的XNode对象，copy后发现就是我们配置文件中<configuration>标签中的内容。
+3. 进入到parseConfiguration方法中，可以看出好多方法的字符串参数都和我们<configuration>标签中的一些标签名称相同。没错，每一步都是去扫描到对应参数的标签内容从而进行一些配置处理。
+4. 我们此处不研究其他处内容，直接看environmentsElement方法的内容。root.evalNode("environments")返回的XNode对象的value就是我们的environments标签内容。
+5. 进入到environmentsElement方法中，会循环遍历下一级的environment，此处便是解析xml配置多数据源的地方。
+6. dataSourceElement方法会拿到dataSource标签的内容生成一个DataSourceFactory ，并根据我们的配置给其属性赋值。通过getDataSource()方法便可以拿到我们的数据源。最后调用configuration.setEnvironment给到全局配置中的。
+##### 解决：通过 DataSourceBuilder 去构建一个我们自定义的数据源，通过dataSourceBuilder.type(DynamicDataSource.class)注入我们的数据源到datasource，在build的时候会实例化我们的自定义数据源。
+
 ##  基础配置类
 ![5XmXbM1Mcw](https://user-images.githubusercontent.com/91240419/185086087-f842d987-084a-4af4-ad3b-944eac09181a.jpg)
 
