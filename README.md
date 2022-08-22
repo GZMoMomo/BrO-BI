@@ -3,6 +3,10 @@ BI系统
 
 ##### 难点：
 - 问题：数据源切换成功后，使用mybatis查询其他数据源数据时依旧停留在默认数据源，使用JDBC可以查询成功，猜想mybatis解析的时候没有解析到新的数据源配置。
+- 问题：查完数据后没有迅速释放connection。
+  - 这个报错跟spring.datasource.hikari.connection-timeout和spring.datasource.hikari.maximum-pool-size都有关系。
+  - 连接是一种非常宝贵的资源，获取到connection之后，马上就应该开始执行SQL，执行完SQL之后马上就应该close。一定要尽快归还connection，这样也不影响其他业务的操作。
+  - 同一个线程中多次getConnection，获取到的是不同的connection。
 ##### 复习一下流程：
 ![image](https://user-images.githubusercontent.com/91240419/185528084-73e6d0e6-36e4-436d-823c-2af1b0579efd.png)
 1. mybatis是什么时候获取到数据源的呢？要从测试方法生成SqlSessionFactory说起。通过断点进入到SqlSessionFactoryBuilder的build方法中，方法体就两行关键代码，首先new了一个XML 配置生成器，接着调用了其parse()生成一个Configuration对象。
