@@ -1,5 +1,7 @@
 # BrO-BI
 BI系统
+![image](https://user-images.githubusercontent.com/91240419/186123082-0bc0e8b3-aac8-473b-a61b-15298ac7fa93.png)
+![image](https://user-images.githubusercontent.com/91240419/186123165-32983a2b-2319-44f2-910a-c58090bbf03c.png)
 
 ##### 难点：
 - 问题：数据源切换成功后，使用mybatis查询其他数据源数据时依旧停留在默认数据源，使用JDBC可以查询成功，猜想mybatis解析的时候没有解析到新的数据源配置。
