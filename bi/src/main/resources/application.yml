@@ -6,6 +6,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  
   #热部署开关，true开启，false关闭
   devtools:
     restart:
@@ -21,3 +22,8 @@ spring:
 server:
   #端口号
   port: 8081
+
+mybatis-plus:
+  mapper-locations: classpath:mapping/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

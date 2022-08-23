@@ -1,9 +1,10 @@
 package com.bro.bisystem.bi;
 
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.bro.bisystem.bi.dynamicDS.datasource.DatasourceConfigCache;
 import com.bro.bisystem.bi.dynamicDS.datasource.DatasourceConfigContextHolder;
 import com.bro.bisystem.bi.dynamicDS.datasource.DynamicDataSource;
+import com.bro.bisystem.bi.mapper.DataMapper;
 import com.bro.bisystem.bi.mapper.DbListMapper;
 import com.bro.bisystem.bi.pojo.DbList;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -25,9 +28,10 @@ import java.util.List;
  * </p>
  */
 @SpringBootApplication
-@MapperScan("com.bro.bisystem.bi.mapper")
+//@MapperScan("com.bro.bisystem.bi.mapper")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BiApplication implements CommandLineRunner {
+
     private final DbListMapper dbListMapper;
 
     public static void main(String[] args) {
@@ -43,5 +47,7 @@ public class BiApplication implements CommandLineRunner {
         System.out.println("加载其余数据源配置列表："+dataSourceConfigs);
         //将数据库配置加入缓存
         dataSourceConfigs.forEach(config-> DatasourceConfigCache.INSTANCE.addConfig(config.getId(),config));
+
+
     }
 }

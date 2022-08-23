@@ -1,9 +1,7 @@
 
-package com.bro.bisystem.bi.service.impl;
+package com.bro.bisystem.bi.service.dService;
 
-import com.bro.bisystem.bi.dynamicDS.datasource.DatasourceConfigContextHolder;
 import com.bro.bisystem.bi.dynamicDS.datasource.DynamicDataSource;
-import com.bro.bisystem.bi.service.IDBDetailService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -28,17 +26,17 @@ import java.util.Map;
 public class DBDetailServiceImpl implements IDBDetailService {
 
     @Override
-    public Connection getConnection(String id) throws SQLException {
-        Long configId=Long.parseLong(id);
-        DatasourceConfigContextHolder.setCurrentDatasourceConfig(configId);
+    public Connection getConnection() throws SQLException {
+        /*Long configId=Long.parseLong(id);
+        DatasourceConfigContextHolder.setCurrentDatasourceConfig(configId);*/
         DynamicDataSource dynamicDataSource=new DynamicDataSource();
         Connection c=dynamicDataSource.getConnection();
         return c;
     }
 
     @Override
-    public List<String> getTables(String id,String catalog) throws SQLException {
-        DatabaseMetaData databaseMetaData=getConnection(id).getMetaData();
+    public List<String> getTables(String catalog) throws SQLException {
+        DatabaseMetaData databaseMetaData=getConnection().getMetaData();
         List<String> tables=new ArrayList<>();
         ResultSet resultSet=databaseMetaData.getTables(catalog,null,null,null);
         while (resultSet.next()){
@@ -48,12 +46,23 @@ public class DBDetailServiceImpl implements IDBDetailService {
     }
 
     @Override
-    public Map<String, String> getColumns(String id,String catalog, String table) throws SQLException {
-        DatabaseMetaData databaseMetaData=getConnection(id).getMetaData();
+    public Map<String, String> getColumns(String catalog, String table) throws SQLException {
+        DatabaseMetaData databaseMetaData=getConnection().getMetaData();
         Map<String,String> columns=new HashMap<>();
         ResultSet resultSet=databaseMetaData.getColumns(catalog,null,table,null);
         while (resultSet.next()){
             columns.put(resultSet.getString(4),resultSet.getString(6));
+        }
+        return columns;
+    }
+
+    @Override
+    public List<String> getAllColumns(String catalog, String table) throws SQLException {
+        DatabaseMetaData databaseMetaData=getConnection().getMetaData();
+        List<String> columns=new ArrayList<>();
+        ResultSet resultSet=databaseMetaData.getColumns(catalog,null,table,null);
+        while (resultSet.next()){
+            columns.add(resultSet.getString(4));
         }
         return columns;
     }

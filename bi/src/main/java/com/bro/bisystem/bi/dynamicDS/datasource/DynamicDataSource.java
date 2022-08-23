@@ -15,6 +15,7 @@ import java.sql.SQLException;
  * </p>
  */
 public class DynamicDataSource extends HikariDataSource {
+
     @Override
     public Connection getConnection() throws SQLException {
         //获取当前数据源id

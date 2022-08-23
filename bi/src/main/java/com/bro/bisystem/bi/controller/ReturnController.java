@@ -13,4 +13,15 @@ public class ReturnController {
     public String hello(){
         return "hello";
     }
+
+    @RequestMapping("dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
+
+
+    @RequestMapping("pricing")
+    public String pricing(){
+        return "pricing";
+    }
 }

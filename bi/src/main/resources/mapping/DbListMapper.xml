@@ -16,5 +16,4 @@
     <sql id="Base_Column_List">
         id, host, port, username, password, database
     </sql>
-
 </mapper>

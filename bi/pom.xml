@@ -59,6 +59,18 @@
             <version>3.0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
         <!--mybatis逆向工程-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -97,6 +109,12 @@
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
         </dependency>
+
+        <!-- aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -110,8 +128,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
-
     </build>
 
 </project>

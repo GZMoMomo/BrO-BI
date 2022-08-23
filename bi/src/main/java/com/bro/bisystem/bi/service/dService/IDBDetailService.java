@@ -1,4 +1,4 @@
-package com.bro.bisystem.bi.service;
+package com.bro.bisystem.bi.service.dService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,11 +15,14 @@ import java.util.Map;
  */
 public interface IDBDetailService {
     //获取数据源连接Connecion
-    Connection getConnection(String id) throws SQLException;
+    Connection getConnection() throws SQLException;
 
     //获取指定数据库下的表目录
-    List<String> getTables(String id,String catalog) throws SQLException;
+    List<String> getTables(String catalog) throws SQLException;
 
     //返回指定表下的字段目录
-    Map<String, String> getColumns(String id,String catalog, String table) throws SQLException;
+    Map<String, String> getColumns(String catalog, String table) throws SQLException;
+
+    //返回所有字段
+    List<String> getAllColumns(String catalog,String table) throws SQLException;
 }

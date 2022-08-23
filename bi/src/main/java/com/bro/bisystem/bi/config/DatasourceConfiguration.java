@@ -1,5 +1,5 @@
-/*
-package com.bro.bisystem.bi.dynamicDS.config;
+
+package com.bro.bisystem.bi.config;
 
 
 import javax.sql.DataSource;
@@ -11,13 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
-*/
+
 /**
  * <p>
  * 数据源配置
  * 这个类主要是通过 DataSourceBuilder 去构建一个我们自定义的数据源，将其放入 Spring 容器里
  * </p>
- *//*
+ */
+
 
 
 @Configuration
@@ -31,5 +32,6 @@ public class DatasourceConfiguration {
         return dataSourceBuilder.build();
     }
 }
-*/
+
+
 
