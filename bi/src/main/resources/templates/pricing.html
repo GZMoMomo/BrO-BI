@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>BroBI</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/pricing/">
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+<link href="/js/bootstrap.min.css" rel="stylesheet">
+
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/js/pricing.css" rel="stylesheet">
+  </head>
+  <body>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">请选取您所需要的表</h1>
+  <p class="lead">Please select the table you need.</p>
+</div>
+
+<div class="container" id="container">
+  <div class="row row-cols-1 row-cols-md-3 justify-content-center">
+    <div class="card-deck col mb-3 text-center" v-for="table in tables">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">{{table}}</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">Bro<small class="text-muted">/ BI</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>10 users included</li>
+            <li>2 GB of storage</li>
+            <li>Help center access</li>
+          </ul>
+          <button type="button" class="btn btn-lg btn-block btn-outline-primary" @click="dashboard(table)">Get it!</button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</div>
+
+
+    
+  </body>
+<script>
+  new Vue({
+    el:"#container",
+    data:{
+      datas:[],
+      id:null,
+      catalog:null,
+      tables:[]
+    },
+    created(){
+      this.getTables()
+    },
+    methods:{
+      /*getTables:function(id,catalog){
+        var url="/db-detail/listTables"
+        axios.get(url,{headers:{"Config-Id":"1"},params:{catalog:"test"}}).then(response=>{
+          this.tables=response.data.tables
+          this.id=id
+          this.catalog=catalog
+        })
+      }*/
+
+      getTables(){
+        var url="/db-detail/listTables"
+        this.id=sessionStorage.getItem("id")
+        this.catalog=sessionStorage.getItem("catalog")
+        axios.get(url,{headers:{"Config-Id":this.id},params:{catalog:this.catalog}}).then(response=>{
+          this.tables=response.data.tables
+        })
+      },
+
+      dashboard:function (table) {
+        var url="/db-detail/listColumns"
+        axios.get(url,{headers:{"Config-Id":this.id},params:{catalog:this.catalog,table:table}}).then(response=>{
+          sessionStorage.setItem("id",this.id)
+          sessionStorage.setItem("columns",response.data.columns)
+          sessionStorage.setItem("table",table)
+          sessionStorage.setItem("catalog",this.catalog)
+          window.location.href= "/dashboard"
+        })
+
+      }
+
+
+    }
+  })
+</script>
+</html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>BroBI</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/dashboard/">
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/echarts.js"></script>
+
+    <!-- Bootstrap core CSS -->
+<link href="/js/bootstrap.min.css" rel="stylesheet">
+
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/js/dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+    
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" id="nav">
+
+    <div class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 text-center" >
+      <a @click="pricing" style="cursor: pointer">选取表</a>
+      <a><span data-feather="layers"></span></a>
+    </div>
+
+
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="col-md-6 text-center "><h5 style="color: aliceblue">{{table}}</h5></div>
+
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">退出</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid" id="container">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="sidebar-sticky pt-3">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>维度</span>
+        </h6>
+
+        <ul class="nav flex-column" v-for="(value,key) in columns":key="key">
+          <li class="nav-item ">
+            <a class="nav-link" v-if="value=='VARCHAR'" :class="isactive(isActive,key)" @click="changeClass(key,value)" style="cursor: pointer">
+              <span data-feather="bar-chart-2"></span>
+              {{key}}
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>指标</span>
+        </h6>
+        <ul class="nav flex-column " v-for="(value,key) in columns":key="key">
+          <li class="nav-item">
+            <a class="nav-link" href="#" v-if="value=='DOUBLE'" :class="isactive(isActive,key)" @click="changeClass(key,value)" style="cursor: pointer">
+              <span data-feather="file-text"></span>
+              {{key}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">可视化图表</h1>
+      </div>
+
+      <!--<div class="my-4 w-100" id="main" width="900" height="380"></div>-->
+      <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+      <div id="main" style="width: 1080px;height:380px;"></div>
+
+      <h2>数据预览</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th v-for="(value,key) in datas[0]":key="key" class="text-center">{{key}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="data in datas">
+              <td v-for="(value,key) in data":key="key" class="text-center">{{value}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"><\/script>')</script><script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+
+  </body>
+<script>
+  new Vue({
+    el:"#container",
+    data:{
+      id:null,
+      catalog:null,
+      table:null,
+      datas:[],
+      columns:[],
+      colNameList:[],
+      isActive:[],
+      xList:[],
+      yList:[],
+      partdatas:[],
+    },
+    created(){
+      this.initial()
+    },
+    methods:{
+      /*getPartdatas:function(colNameList){
+        var url="/db-detail/getDatas"
+        axios.get(url,{headers:{"Config-Id":this.id},params:{table:this.table,colNameList:colNameList}}).then(response=>{
+          this.partdatas=response.data.partdatas
+        })
+      },*/
+      isactive:function(isActive,key){
+        var boolean=this.contains(isActive,key)
+        if(boolean===true){
+          return "active"
+        }
+      },
+      contains:function(arr,str){
+        if(arr==undefined || arr.length <= 0){
+          return false;
+        }else{
+          var i = arr.length;
+          var boolean=false
+          while (i--) {
+            if (arr[i] == str) {
+              boolean=true;
+            }
+          }
+          return boolean;
+        }
+
+      },
+      xlist:function(key){
+        if(this.contains(this.xList,key)===false){
+          this.xList.push(key)
+        }else{
+          this.xList.splice(this.xList.indexOf(key),1)
+        }
+      },
+      ylist:function(key){
+        if(this.contains(this.yList,key)===false){
+          this.yList.push(key)
+        }else{
+          this.yList.splice(this.yList.indexOf(key),1)
+        }
+      },
+      changeClass:function(key,value){
+        if(this.contains(this.isActive,key)===false){
+          this.isActive.push(key)
+        }else{
+          this.isActive.splice(this.isActive.indexOf(key),1)
+        }
+        if(value==="VARCHAR"){
+          this.xlist(key)
+        }else{
+          this.ylist(key)
+        }
+        //this.getPartdatas(this.isActive)
+      },
+      initial(){
+        this.id=sessionStorage.getItem("id")
+        this.catalog=sessionStorage.getItem("catalog")
+        this.table=sessionStorage.getItem("table")
+        var url="/db-detail/listColumns"
+        axios.get(url,{headers:{"Config-Id":this.id},params:{catalog:this.catalog,table:this.table}}).then(response=>{
+          this.columns=response.data.columns
+        })
+        var url2="/db-detail/getAllDatas"
+        axios.get(url2,{headers:{"Config-Id":this.id},params:{catalog:this.catalog,table:this.table}}).then(response=>{
+          this.datas=response.data.datas
+        })
+
+      },
+    }
+  })
+
+  new Vue({
+    el: "#nav",
+    data:{
+      id:null,
+      catalog:null,
+      table:null
+    },
+    created(){
+      this.initial()
+    },
+    methods:{
+      pricing(){
+        sessionStorage.setItem("id",this.id)
+        sessionStorage.setItem("catalog",this.catalog)
+        window.location.href= "/pricing"
+      },
+      initial(){
+        this.table=sessionStorage.getItem("table")
+        this.id=sessionStorage.getItem("id")
+        this.catalog=sessionStorage.getItem("catalog")
+      }
+    }
+  })
+</script>
+
+
+  <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+
+      tooltip: {},
+      legend: {
+        data: ['销量']
+      },
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+  </script>
+</html>
