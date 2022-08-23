@@ -130,6 +130,9 @@
 
   </body>
 <script>
+  //全局引入echarts
+  //需要挂载到Vue原型上
+  Vue.prototype.$echarts = echarts
   new Vue({
     el:"#container",
     data:{
@@ -143,17 +146,82 @@
       xList:[],
       yList:[],
       partdatas:[],
+      xAxis:[],
+      yAxis:[]
     },
     created(){
       this.initial()
     },
+    mounted(){
+      // 在通过mounted调用即可
+      this.echartsInit()
+    },
     methods:{
-      /*getPartdatas:function(colNameList){
+      echartsInit(){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+
+          tooltip: {},
+          legend: {
+            data: JSON.stringify(this.ylist())
+          },
+          xAxis: {
+            data: this.xAxis
+          },
+          yAxis: {},
+          series: [
+            {
+              name: JSON.stringify(this.ylist()),
+              type: 'bar',
+              data: this.yAxis
+            }
+          ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+      },
+      splitPardata:function(){
         var url="/db-detail/getDatas"
-        axios.get(url,{headers:{"Config-Id":this.id},params:{table:this.table,colNameList:colNameList}}).then(response=>{
-          this.partdatas=response.data.partdatas
+        var t=this.table
+        var cl=JSON.stringify(this.isActive)
+        axios.get(url,{headers:{"Config-Id":this.id},params:{table:t,colNameList:cl}}).then(response=>{
+          var raw=response.data.partdatas
+          var x=[]
+          var y=[]
+          var ma=raw[0];
+          for(var key in ma){
+            if(this.contains(this.xList,key)===true){
+              for(var r in raw){
+                var mapp=raw[r]
+                x.push(mapp[key])
+              }
+            }else if(this.contains(this.yList,key)===true){
+              for(var r in raw){
+                var mapp=raw[r]
+                y.push(mapp[key])
+              }
+            }
+          }
+          this.xAxis=x
+          this.yAxis=y
+          console.log("x:"+this.xAxis)
+        console.log("y:"+this.yAxis)
+          this.echartsInit()
         })
-      },*/
+      },
+      getPartdatas:function(isActive){
+        var url="/db-detail/getDatas"
+        var t=this.table
+        var cl=JSON.stringify(this.isActive)
+        axios.get(url,{headers:{"Config-Id":this.id},params:{table:t,colNameList:cl}}).then(response=>{
+          sessionStorage.setItem("parda",response.data.partdatas)
+        })
+        this.partdatas=sessionStorage.getItem("parda")
+      },
       isactive:function(isActive,key){
         var boolean=this.contains(isActive,key)
         if(boolean===true){
@@ -200,7 +268,8 @@
         }else{
           this.ylist(key)
         }
-        //this.getPartdatas(this.isActive)
+        this.getPartdatas(this.isActive)
+        this.splitPardata()
       },
       initial(){
         this.id=sessionStorage.getItem("id")
@@ -242,34 +311,9 @@
       }
     }
   })
+
+
 </script>
 
 
-  <script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-
-    // 指定图表的配置项和数据
-    var option = {
-
-      tooltip: {},
-      legend: {
-        data: ['销量']
-      },
-      xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-      },
-      yAxis: {},
-      series: [
-        {
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }
-      ]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-  </script>
 </html>

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +57,16 @@ public class DbDetailController {
 
     //根据列名和表名查找数据
     @RequestMapping("/getDatas")
-    public Dict getDatas(@RequestParam("table") String table,@RequestParam("colNameList") List<String> colNameList){
-        List<Map<String, Object>> datas = dataMapper.listDataById(table,colNameList);
-        return Dict.create().set("code",200).set("message","查询成功").set("partdatas",datas);
+    public Dict getDatas(@RequestParam("table") String table,@RequestParam("colNameList")String str){
+        try {
+            String substring = str.substring(1, str.length() - 1);
+            String sub = substring.replaceAll("\"", "");
+            System.out.println(substring);
+            List<String> colNameList = Arrays.asList(sub.split(","));
+            List<Map<String, Object>> datas = dataMapper.listDataById(table, colNameList);
+            return Dict.create().set("code", 200).set("message", "查询成功").set("partdatas", datas);
+        }catch (Exception e){
+            return Dict.create().set("code", 200).set("message", "查询成功").set("partdatas", "null");
+        }
     }
 }
