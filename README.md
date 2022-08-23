@@ -1,5 +1,5 @@
 # BrO-BI
-BI系统
+BI系统  
 ![tutieshi_640x381_22s](https://user-images.githubusercontent.com/91240419/186159678-69dbae76-3352-4240-b3bf-72ec24823759.gif)
 
 ![image](https://user-images.githubusercontent.com/91240419/186123082-0bc0e8b3-aac8-473b-a61b-15298ac7fa93.png)
